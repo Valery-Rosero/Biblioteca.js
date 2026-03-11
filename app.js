@@ -10,18 +10,37 @@ const dashboardEst = document.getElementById('dashboard-estudiante');
 const dashboardAdm = document.getElementById('dashboard-admin');
 const formStep1 = document.getElementById('form-step1');
 const formStep2 = document.getElementById('form-step2');
-const logoutBtn = document.getElementById('logout');
+const logoutEstBtn = document.getElementById('logout-est');
+const logoutAdmBtn = document.getElementById('logout-adm');
 
 // Event listeners
 formStep1.addEventListener('submit', handleStep1);
 formStep2.addEventListener('submit', handleStep2);
-logoutBtn.addEventListener('click', logout);
+logoutEstBtn.addEventListener('click', logout);
+logoutAdmBtn.addEventListener('click', logout);
+
+// Función para mostrar elemento con animación
+function showElement(element) {
+    element.classList.remove('hidden');
+    setTimeout(() => element.classList.add('fade-in'), 10);
+}
+
+// Función para ocultar elemento con animación
+function hideElement(element) {
+    element.classList.remove('fade-in');
+    setTimeout(() => element.classList.add('hidden'), 300);
+}
 
 // Función para mostrar mensajes
 function showMessage(elementId, message, isError = false) {
     const element = document.getElementById(elementId);
     element.textContent = message;
-    element.style.color = isError ? 'red' : 'green';
+    element.style.color = isError ? '#ff6b6b' : '#4CAF50';
+    if (message) {
+        element.classList.add('show');
+    } else {
+        element.classList.remove('show');
+    }
 }
 
 // Paso 1: Enviar email y password
@@ -41,8 +60,8 @@ async function handleStep1(e) {
 
         if (response.ok) {
             showMessage('message-step1', data.message);
-            step1.classList.add('hidden');
-            step2.classList.remove('hidden');
+            hideElement(step1);
+            setTimeout(() => showElement(step2), 300);
         } else {
             showMessage('message-step1', data.message, true);
         }
@@ -70,8 +89,8 @@ async function handleStep2(e) {
             accessToken = data.accessToken;
             refreshToken = data.refreshToken;
             showMessage('message-step2', 'Login exitoso');
-            step2.classList.add('hidden');
-            loadDashboard();
+            hideElement(step2);
+            setTimeout(() => loadDashboard(), 300);
         } else {
             showMessage('message-step2', data.message, true);
         }
@@ -94,7 +113,7 @@ async function loadDashboard() {
             const data = await response.json();
             if (response.ok) {
                 displayLibros(data.librosPrestados, 'libros-prestados');
-                dashboardEst.classList.remove('hidden');
+                showElement(dashboardEst);
             } else {
                 handleTokenError(response);
             }
@@ -105,7 +124,7 @@ async function loadDashboard() {
             const data = await response.json();
             if (response.ok) {
                 displayLibros(data.inventario, 'inventario');
-                dashboardAdm.classList.remove('hidden');
+                showElement(dashboardAdm);
             } else {
                 handleTokenError(response);
             }
@@ -150,10 +169,9 @@ async function handleTokenError(response) {
 function logout() {
     accessToken = null;
     refreshToken = null;
-    step1.classList.remove('hidden');
-    step2.classList.add('hidden');
-    dashboardEst.classList.add('hidden');
-    dashboardAdm.classList.add('hidden');
+    hideElement(dashboardEst);
+    hideElement(dashboardAdm);
+    setTimeout(() => showElement(step1), 300);
     document.getElementById('email').value = '';
     document.getElementById('password').value = '';
     document.getElementById('codigo').value = '';
