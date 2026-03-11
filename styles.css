@@ -1,13 +1,24 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+/* ===== LOGIN CONTAINER ===== */
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    animation: fadeIn 1s ease-in;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    animation: fadeIn 0.8s ease-in;
 }
 
 @keyframes fadeIn {
@@ -15,43 +26,20 @@ body {
     to { opacity: 1; }
 }
 
-.container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    width: 450px;
-    text-align: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+.login-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    animation: slideUp 0.5s ease-out;
 }
 
-.container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-}
-
-h1 {
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 2.5em;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-container, .dashboard {
-    animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
+@keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -59,23 +47,52 @@ h1 {
     }
 }
 
-label {
-    display: block;
-    margin-top: 15px;
-    text-align: left;
-    font-weight: 600;
-    color: #555;
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-input {
+.login-header h1 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.login-header p {
+    color: #999;
+    font-size: 14px;
+}
+
+.form-container {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
     width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border: 2px solid #e1e5e9;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 2px solid #e0e6ed;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+input::placeholder {
+    color: #ccc;
 }
 
 input:focus {
@@ -84,118 +101,205 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-button {
+.btn-primary {
+    width: 100%;
+    padding: 10px 16px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 12px 20px;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 15px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 14px;
     font-weight: 600;
+    cursor: pointer;
     transition: all 0.3s ease;
+    margin-top: 10px;
     position: relative;
     overflow: hidden;
 }
 
-button::before {
+.btn-primary::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.4s;
 }
 
-button:hover::before {
+.btn-primary:hover::before {
     left: 100%;
 }
 
-button:hover {
+.btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }
 
-.btn-logout {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-}
-
-.btn-logout:hover {
-    background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
-    box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
-}
-
-.hidden {
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.95);
-    transition: all 0.3s ease;
-}
-
-.fade-in {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-}
-
-.dashboard {
-    text-align: left;
-}
-
-h2 {
-    color: #333;
+.info-text {
+    color: #999;
+    font-size: 13px;
     margin-bottom: 20px;
-    font-size: 1.8em;
+    text-align: center;
 }
 
-h3 {
-    color: #667eea;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    font-size: 1.3em;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    margin: 8px 0;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-li:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-li::before {
-    content: '📖';
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2em;
-}
-
-p {
-    margin-top: 15px;
-    font-weight: 500;
-    min-height: 20px;
+#message-step1,
+#message-step2 {
+    margin-top: 12px;
+    min-height: 16px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-p.show {
+#message-step1.show,
+#message-step2.show {
     opacity: 1;
+}
+
+/* ===== DASHBOARD CONTAINER ===== */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.navbar h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info span {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.btn-logout {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+/* ===== DASHBOARD CONTENT ===== */
+.dashboard-content {
+    flex: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 40px 30px;
+}
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    color: #999;
+    font-size: 15px;
+}
+
+.books-grid {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.books-grid h3 {
+    color: #667eea;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e6ed;
+}
+
+.books-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.books-list li {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: default;
+    font-size: 15px;
+}
+
+.books-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
+}
+
+.books-list li::before {
+    content: '📖';
+    font-size: 1.5em;
+    flex-shrink: 0;
+}
+
+.hidden {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.fade-in {
+    opacity: 1 !important;
+    visibility: visible !important;
 }

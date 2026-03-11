@@ -3,55 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca API</title>
+    <title>Biblioteca Digital</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Biblioteca Digital</h1>
+    <!-- Login Container -->
+    <div id="login-container" class="login-container fade-in">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>📚 Biblioteca Digital</h1>
+                <p>Sistema de Gestión de Libros</p>
+            </div>
 
-        <!-- Paso 1: Login con email y password -->
-        <div id="login-step1" class="form-container fade-in">
-            <h2>Iniciar Sesión - Paso 1</h2>
-            <form id="form-step1">
-                <label for="email">Email:</label>
-                <input type="email" id="email" required>
+            <!-- Paso 1: Login -->
+            <div id="login-step1" class="form-container">
+                <h2>Iniciar Sesión</h2>
+                <form id="form-step1">
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Enviar Código de Verificación</button>
+                </form>
+                <p id="message-step1"></p>
+            </div>
 
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" required>
-
-                <button type="submit">Enviar Código</button>
-            </form>
-            <p id="message-step1"></p>
+            <!-- Paso 2: Verificación -->
+            <div id="login-step2" class="form-container hidden">
+                <h2>Verificación de Seguridad</h2>
+                <p class="info-text">Se envió un código a tu correo electrónico</p>
+                <form id="form-step2">
+                    <div class="form-group">
+                        <label for="codigo">Código de Verificación</label>
+                        <input type="text" id="codigo" placeholder="0000" maxlength="4" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Verificar Código</button>
+                </form>
+                <p id="message-step2"></p>
+            </div>
         </div>
+    </div>
 
-        <!-- Paso 2: Verificación del código -->
-        <div id="login-step2" class="form-container hidden">
-            <h2>Iniciar Sesión - Paso 2</h2>
-            <form id="form-step2">
-                <label for="codigo">Código de Verificación:</label>
-                <input type="text" id="codigo" required>
+    <!-- Dashboard Estudiante -->
+    <div id="dashboard-estudiante" class="dashboard-container hidden">
+        <nav class="navbar">
+            <div class="nav-content">
+                <h1>📚 Biblioteca Digital</h1>
+                <div class="user-info">
+                    <span id="user-role">Estudiante</span>
+                    <button id="logout-est" class="btn-logout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </nav>
+        <main class="dashboard-content">
+            <div class="dashboard-header">
+                <h2>Mi Espacio Personal</h2>
+                <p>Gestiona tus libros prestados</p>
+            </div>
+            <div class="books-grid">
+                <h3>Libros Prestados</h3>
+                <ul id="libros-prestados" class="books-list"></ul>
+            </div>
+        </main>
+    </div>
 
-                <button type="submit">Verificar</button>
-            </form>
-            <p id="message-step2"></p>
-        </div>
-
-        <!-- Dashboard Estudiante -->
-        <div id="dashboard-estudiante" class="dashboard hidden">
-            <h2>Mi Espacio - Estudiante</h2>
-            <h3>Libros Prestados:</h3>
-            <ul id="libros-prestados"></ul>
-            <button id="logout-est" class="btn-logout">Cerrar Sesión</button>
-        </div>
-
-        <!-- Dashboard Admin -->
-        <div id="dashboard-admin" class="dashboard hidden">
-            <h2>Dashboard - Administrador</h2>
-            <h3>Inventario de Libros:</h3>
-            <ul id="inventario"></ul>
-            <button id="logout-adm" class="btn-logout">Cerrar Sesión</button>
-        </div>
+    <!-- Dashboard Admin -->
+    <div id="dashboard-admin" class="dashboard-container hidden">
+        <nav class="navbar">
+            <div class="nav-content">
+                <h1>📚 Biblioteca Digital</h1>
+                <div class="user-info">
+                    <span id="user-role">Administrador</span>
+                    <button id="logout-adm" class="btn-logout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </nav>
+        <main class="dashboard-content">
+            <div class="dashboard-header">
+                <h2>Panel de Administración</h2>
+                <p>Gestiona el inventario de la biblioteca</p>
+            </div>
+            <div class="books-grid">
+                <h3>Inventario de Libros</h3>
+                <ul id="inventario" class="books-list"></ul>
+            </div>
+        </main>
     </div>
 
     <script src="app.js"></script>

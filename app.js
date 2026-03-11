@@ -2,8 +2,10 @@ const API_BASE = 'http://localhost:3000';
 
 let accessToken = null;
 let refreshToken = null;
+let currentEmail = null;
 
 // Elementos del DOM
+const loginContainer = document.getElementById('login-container');
 const step1 = document.getElementById('login-step1');
 const step2 = document.getElementById('login-step2');
 const dashboardEst = document.getElementById('dashboard-estudiante');
@@ -12,6 +14,9 @@ const formStep1 = document.getElementById('form-step1');
 const formStep2 = document.getElementById('form-step2');
 const logoutEstBtn = document.getElementById('logout-est');
 const logoutAdmBtn = document.getElementById('logout-adm');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const codigoInput = document.getElementById('codigo');
 
 // Event listeners
 formStep1.addEventListener('submit', handleStep1);
@@ -46,8 +51,9 @@ function showMessage(elementId, message, isError = false) {
 // Paso 1: Enviar email y password
 async function handleStep1(e) {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    currentEmail = email;
 
     try {
         const response = await fetch(`${API_BASE}/login-paso1`, {
@@ -73,8 +79,8 @@ async function handleStep1(e) {
 // Paso 2: Verificar código
 async function handleStep2(e) {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    const codigo = document.getElementById('codigo').value;
+    const email = currentEmail;
+    const codigo = codigoInput.value;
 
     try {
         const response = await fetch(`${API_BASE}/login-paso2`, {
@@ -102,32 +108,33 @@ async function handleStep2(e) {
 // Cargar dashboard según rol
 async function loadDashboard() {
     try {
-        // Decodificar token para obtener rol (simple, sin verificar)
+        // Decodificar token para obtener rol
         const payload = JSON.parse(atob(accessToken.split('.')[1]));
         const role = payload.role;
 
+        hideElement(loginContainer);
         if (role === 'estudiante') {
-            const response = await fetch(`${API_BASE}/mi-espacio`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                displayLibros(data.librosPrestados, 'libros-prestados');
-                showElement(dashboardEst);
-            } else {
-                handleTokenError(response);
-            }
+            setTimeout(() => {
+                const response = fetch(`${API_BASE}/mi-espacio`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                }).then(r => r.json()).then(data => {
+                    if (data.librosPrestados) {
+                        displayLibros(data.librosPrestados, 'libros-prestados');
+                        showElement(dashboardEst);
+                    }
+                });
+            }, 300);
         } else if (role === 'admin') {
-            const response = await fetch(`${API_BASE}/dashboard-admin`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            const data = await response.json();
-            if (response.ok) {
-                displayLibros(data.inventario, 'inventario');
-                showElement(dashboardAdm);
-            } else {
-                handleTokenError(response);
-            }
+            setTimeout(() => {
+                const response = fetch(`${API_BASE}/dashboard-admin`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                }).then(r => r.json()).then(data => {
+                    if (data.inventario) {
+                        displayLibros(data.inventario, 'inventario');
+                        showElement(dashboardAdm);
+                    }
+                });
+            }, 300);
         }
     } catch (error) {
         console.error('Error cargando dashboard:', error);
@@ -145,10 +152,9 @@ function displayLibros(libros, listId) {
     });
 }
 
-// Manejar errores de token (refresh)
+// Manejar errores de token
 async function handleTokenError(response) {
     if (response.status === 401) {
-        // Intentar refresh token
         const refreshResponse = await fetch(`${API_BASE}/refresh-token`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -158,7 +164,7 @@ async function handleTokenError(response) {
         if (refreshResponse.ok) {
             const data = await refreshResponse.json();
             accessToken = data.accessToken;
-            loadDashboard(); // Reintentar
+            loadDashboard();
         } else {
             logout();
         }
@@ -169,12 +175,16 @@ async function handleTokenError(response) {
 function logout() {
     accessToken = null;
     refreshToken = null;
+    currentEmail = null;
     hideElement(dashboardEst);
     hideElement(dashboardAdm);
-    setTimeout(() => showElement(step1), 300);
-    document.getElementById('email').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('codigo').value = '';
+    setTimeout(() => {
+        showElement(loginContainer);
+        showElement(step1);
+    }, 300);
+    emailInput.value = '';
+    passwordInput.value = '';
+    codigoInput.value = '';
     showMessage('message-step1', '');
     showMessage('message-step2', '');
 }
