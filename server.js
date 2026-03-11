@@ -8,6 +8,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static('.'));
 
 const PORT = 3000;
 const JWT_SECRET = "clave_super_secreta";
